@@ -1,0 +1,97 @@
+/* HospitalDashboard.css */
+.hospital-dashboard {
+  min-height: 100vh;
+  background: var(--cream);
+  padding-bottom: 60px;
+}
+
+/* ── Header ── */
+.hosp-header {
+  background: linear-gradient(135deg, var(--charcoal) 0%, var(--gray-dark) 100%);
+  color: #fff;
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hosp-header-left { display: flex; align-items: center; gap: 18px; }
+
+.hosp-avatar {
+  width: 60px; height: 60px;
+  background: var(--red);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 20px rgba(214,40,40,0.4);
+  flex-shrink: 0;
+}
+
+.hosp-name {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.hosp-meta { color: rgba(255,255,255,0.65); font-size: 0.9rem; }
+
+.hosp-signout {
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+.hosp-signout:hover { background: rgba(255,255,255,0.1) !important; }
+
+/* ── Tabs ── */
+.hosp-tabs {
+  display: flex;
+  gap: 0;
+  background: #fff;
+  border-bottom: 2px solid var(--gray-pale);
+  padding: 0 40px;
+  overflow-x: auto;
+}
+.hosp-tab-btn {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 18px 28px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gray-mid);
+  cursor: pointer;
+  transition: color var(--transition);
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.hosp-tab-btn:hover { color: var(--charcoal); }
+.hosp-tab-btn.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+.hosp-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px; height: 18px;
+  margin-left: 6px;
+}
+
+/* ── Tab Content ── */
+.hosp-tab-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+@media (max-width: 640px) {
+  .hosp-header { padding: 20px; flex-direction: column; align-items: flex-start; }
+  .hosp-tabs { padding: 0 10px; }
+  .hosp-tab-btn { padding: 14px 14px; font-size: 0.85rem; }
+}

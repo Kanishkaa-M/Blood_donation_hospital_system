@@ -1,0 +1,188 @@
+.donor-dashboard {
+  flex: 1;
+  background: var(--cream);
+}
+
+/* ─── Header ─── */
+.dashboard-header {
+  background: linear-gradient(135deg, var(--charcoal) 0%, #2c1a1a 100%);
+  padding: 36px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-header::before {
+  content: '🩸';
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.dashboard-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dh-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.dh-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px rgba(214, 40, 40, 0.3);
+}
+
+.dh-name {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+}
+
+.dh-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dh-loc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.dh-right {
+  display: flex;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+.dh-stat {
+  text-align: center;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 90px;
+}
+
+.dh-stat-val {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--red-light);
+}
+
+.dh-stat-label {
+  display: block;
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* ─── Tabs ─── */
+.dashboard-tabs {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 64px;
+  z-index: 50;
+}
+
+.tabs-inner {
+  display: flex;
+  gap: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 16px 20px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gray-mid);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all var(--transition);
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--charcoal); }
+
+.tab-btn.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+.tab-icon { font-size: 1.1rem; }
+
+.tab-badge {
+  background: var(--red);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  line-height: 1.4;
+  animation: pulse-dot 1.5s ease infinite;
+}
+
+/* ─── Content ─── */
+.dashboard-content {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+/* ─── Section Headers ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--charcoal);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .dashboard-header-inner { flex-direction: column; align-items: flex-start; }
+  .dh-right { width: 100%; justify-content: space-around; }
+  .tab-btn { padding: 14px 12px; font-size: 0.82rem; }
+}

@@ -1,0 +1,282 @@
+.home {
+  flex: 1;
+  overflow-x: hidden;
+}
+
+/* ─── Hero ─── */
+.hero {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 60px;
+  padding: 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.drop {
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.06;
+  animation: floatDrop 6s ease-in-out infinite;
+}
+.drop-0 { top: 10%; left: 5%;  animation-delay: 0s;   font-size: 4rem; }
+.drop-1 { top: 60%; left: 2%;  animation-delay: 1s;   font-size: 2rem; }
+.drop-2 { top: 30%; right: 10%;animation-delay: 2s;   font-size: 3rem; }
+.drop-3 { top: 75%; right: 5%; animation-delay: 0.5s; font-size: 1.5rem; }
+.drop-4 { top: 5%;  right: 40%;animation-delay: 3s;   font-size: 2.5rem; }
+.drop-5 { top: 85%; left: 40%; animation-delay: 1.5s; font-size: 2rem; }
+
+@keyframes floatDrop {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%       { transform: translateY(-20px) rotate(5deg); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  animation-delay: 0.1s;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: var(--red-glow);
+  padding: 5px 14px;
+  border-radius: 99px;
+  margin-bottom: 22px;
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.08;
+  color: var(--charcoal);
+  margin-bottom: 22px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--gray-mid);
+  max-width: 480px;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ─── Blood Card ─── */
+.hero-visual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  animation-delay: 0.3s;
+}
+
+.blood-card {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 50px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.blood-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  background: var(--red-glow);
+  border-radius: 50%;
+}
+
+.blood-card-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  margin-bottom: 12px;
+}
+
+.blood-card-type {
+  font-family: var(--font-display);
+  font-size: 5.5rem;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.blood-card-hospital {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--gray-dark);
+  margin-bottom: 20px;
+}
+
+.blood-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--red);
+  background: var(--red-glow);
+  padding: 8px 16px;
+  border-radius: 99px;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse-dot 1.4s ease infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ─── Sections ─── */
+.groups-section,
+.how-section {
+  padding: 80px;
+  background: var(--warm-white);
+}
+
+.groups-section {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--warm-white) 100%);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--charcoal);
+}
+
+.groups-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.group-chip {
+  width: 80px; height: 80px;
+  border-radius: var(--radius-md);
+  background: var(--cream);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--red);
+  transition: all var(--transition);
+  cursor: default;
+}
+.group-chip:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px var(--red-glow);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.step-card {
+  text-align: center;
+  position: relative;
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.step-icon {
+  font-size: 2rem;
+  margin-bottom: 14px;
+}
+
+.step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--charcoal);
+}
+
+.step-desc {
+  font-size: 0.9rem;
+  color: var(--gray-mid);
+  line-height: 1.65;
+}
+
+/* ─── Footer ─── */
+.home-footer {
+  padding: 28px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--gray-light);
+  background: var(--cream);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; padding: 50px 40px; text-align: center; }
+  .hero-sub { margin: 0 auto 36px; }
+  .hero-cta { justify-content: center; }
+  .hero-visual { display: none; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .groups-section, .how-section { padding: 60px 40px; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 40px 20px; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .groups-section, .how-section { padding: 50px 20px; }
+  .home-footer { padding: 20px; flex-direction: column; gap: 8px; }
+}

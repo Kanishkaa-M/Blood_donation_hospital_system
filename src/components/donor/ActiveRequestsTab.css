@@ -1,0 +1,180 @@
+.requests-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.requests-info-bar {
+  font-size: 0.88rem;
+  color: var(--gray-mid);
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+}
+
+/* ─── Empty / Disabled States ─── */
+.no-requests-notice,
+.empty-requests {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.nrn-icon,
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.no-requests-notice h3,
+.empty-requests h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 10px;
+}
+
+.no-requests-notice p,
+.empty-requests p {
+  font-size: 0.92rem;
+  color: var(--gray-mid);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ─── Request Cards ─── */
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.request-card {
+  padding: 24px;
+  border-left: 4px solid var(--red);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.request-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.rc-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.rc-blood-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px var(--red-glow);
+}
+
+.rc-hospital {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--charcoal);
+  margin-bottom: 5px;
+}
+
+.rc-address,
+.rc-phone {
+  font-size: 0.86rem;
+  color: var(--gray-mid);
+  margin-top: 3px;
+}
+
+.rc-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.rc-time {
+  font-size: 0.8rem;
+  color: var(--gray-light);
+  font-weight: 500;
+}
+
+.rc-units {
+  font-size: 0.82rem;
+  color: var(--gray-mid);
+  font-weight: 600;
+}
+
+.rc-notes {
+  font-size: 0.88rem;
+  color: var(--gray-mid);
+  background: var(--gray-pale);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.rc-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.ready-btn {
+  padding: 14px 28px;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.rc-disclaimer {
+  font-size: 0.78rem;
+  color: var(--gray-light);
+  max-width: 240px;
+  line-height: 1.5;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .rc-top { grid-template-columns: auto 1fr; }
+  .rc-meta { flex-direction: row; align-items: center; }
+  .rc-actions { flex-direction: column; align-items: flex-start; }
+}
+
+/* Module 4 additions */
+.requests-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  color: var(--gray-mid);
+  margin-bottom: 16px;
+}
+.realtime-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1a7a3c;
+  background: #e6f9ed;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.request-card.just-donated {
+  border: 2px solid #28a745;
+  background: #f0fff4;
+}

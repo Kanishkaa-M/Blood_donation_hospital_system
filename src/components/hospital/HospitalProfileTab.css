@@ -1,0 +1,46 @@
+.hprofile { }
+.hprofile-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+.hprofile-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 12px;
+}
+.hprofile-badge-wrap { display: flex; align-items: center; gap: 14px; }
+.hprofile-icon { font-size: 2.4rem; }
+.hprofile-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--charcoal); margin-bottom: 4px; }
+.hprofile-verified { font-size: 0.82rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.hprofile-verified.yes { background: #e6f9ed; color: #1a7a3c; }
+.hprofile-verified.no  { background: #fff3cd; color: #856404; }
+
+.hprofile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 28px;
+}
+.hprofile-field { display: flex; flex-direction: column; gap: 4px; }
+.hprofile-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-mid); }
+.hprofile-value { font-size: 1rem; color: var(--charcoal); font-weight: 500; }
+.hprofile-input {
+  padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  background: var(--warm-white);
+  transition: border-color var(--transition);
+}
+.hprofile-input:focus { outline: none; border-color: var(--red); }
+
+.hprofile-actions { display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--gray-pale); }
+
+@media (max-width: 560px) {
+  .hprofile-grid { grid-template-columns: 1fr; }
+}

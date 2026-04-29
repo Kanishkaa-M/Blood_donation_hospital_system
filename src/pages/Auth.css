@@ -1,0 +1,87 @@
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px);
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--cream) 0%, #fde8e8 100%);
+}
+
+.auth-page-wide .auth-card {
+  max-width: 720px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 44px 40px;
+  animation: fadeUp 0.45s ease both;
+}
+
+.auth-logo {
+  font-size: 2.6rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.auth-title {
+  font-size: 1.9rem;
+  font-weight: 900;
+  text-align: center;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+
+.auth-sub {
+  text-align: center;
+  color: var(--gray-mid);
+  font-size: 0.93rem;
+  margin-bottom: 28px;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--gray-mid);
+  margin-top: 8px;
+}
+
+/* ─── Type Toggle ─── */
+.type-toggle {
+  display: flex;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--gray-mid);
+  transition: all var(--transition);
+}
+
+.toggle-btn.active {
+  background: var(--red);
+  color: #fff;
+}
+
+/* ─── Form Row ─── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .form-row { grid-template-columns: 1fr; }
+  .auth-card { padding: 28px 20px; }
+}

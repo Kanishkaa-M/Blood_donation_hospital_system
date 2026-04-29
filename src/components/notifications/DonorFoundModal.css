@@ -1,0 +1,102 @@
+/* DonorFoundModal.css */
+.dfm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  animation: dfm-fadein 0.25s ease;
+}
+@keyframes dfm-fadein { from { opacity: 0; } to { opacity: 1; } }
+
+.dfm-modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+  animation: dfm-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes dfm-pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Floating emojis */
+.dfm-confetti { position: absolute; inset: 0; pointer-events: none; }
+.dfm-emoji {
+  position: absolute;
+  font-size: 1.6rem;
+  animation: dfm-float 2.5s ease-in-out infinite;
+  opacity: 0.7;
+}
+.dfm-emoji-0 { top: 8%;  left: 10%; animation-delay: 0s;    font-size: 1.8rem; }
+.dfm-emoji-1 { top: 5%;  right: 12%; animation-delay: 0.4s; font-size: 1.4rem; }
+.dfm-emoji-2 { top: 15%; left: 60%; animation-delay: 0.8s;  font-size: 1.2rem; }
+.dfm-emoji-3 { top: 80%; left: 15%; animation-delay: 0.2s;  font-size: 1.5rem; }
+.dfm-emoji-4 { top: 75%; right: 10%; animation-delay: 0.6s; font-size: 1.3rem; }
+
+@keyframes dfm-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(8deg); }
+}
+
+.dfm-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: dfm-bounce 0.6s ease 0.3s both;
+}
+@keyframes dfm-bounce {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.dfm-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+.dfm-subtitle { color: var(--gray-mid); font-size: 0.95rem; margin-bottom: 24px; }
+
+.dfm-donor-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.dfm-bg-badge {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px var(--red-glow);
+}
+.dfm-donor-info { flex: 1; }
+.dfm-donor-name  { font-weight: 700; font-size: 1.05rem; color: var(--charcoal); margin-bottom: 4px; }
+.dfm-donor-phone,
+.dfm-donor-city,
+.dfm-donor-units { font-size: 0.85rem; color: var(--gray-mid); line-height: 1.8; }
+
+.dfm-instruction {
+  font-size: 0.88rem; color: var(--gray-mid);
+  margin-bottom: 24px;
+  background: #e6f9ed;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: #1a7a3c;
+}
+.dfm-close-btn { width: 100%; justify-content: center; font-size: 1rem !important; padding: 14px !important; }

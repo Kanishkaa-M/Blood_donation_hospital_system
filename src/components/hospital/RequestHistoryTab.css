@@ -1,0 +1,74 @@
+/* RequestHistoryTab.css */
+.req-history { display: flex; flex-direction: column; gap: 24px; }
+
+.rh-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.rh-stat {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.rh-stat-num   { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--charcoal); }
+.rh-stat-label { font-size: 0.78rem; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+.rh-empty { padding: 32px; text-align: center; color: var(--gray-mid); }
+.rh-list  { display: flex; flex-direction: column; gap: 12px; }
+
+.rh-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--gray-pale);
+}
+.rh-card.pending   { border-left: 4px solid var(--red); }
+.rh-card.fulfilled { border-left: 4px solid #28a745; }
+.rh-card.cancelled { border-left: 4px solid var(--gray-light); opacity: 0.75; }
+
+.rh-card-top {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.rh-card-top:hover { background: var(--warm-white); }
+
+.rh-bg-badge {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 0.85rem; font-weight: 700;
+  flex-shrink: 0;
+}
+.rh-main { flex: 1; }
+.rh-card-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.83rem; color: var(--gray-mid); }
+.rh-notes { font-size: 0.85rem; color: var(--charcoal); margin-top: 3px; }
+.rh-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.rh-expand { color: var(--gray-mid); font-size: 0.75rem; }
+
+.rh-status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+.status-pending   { background: #fff0f0; color: var(--red); }
+.status-fulfilled { background: #e6f9ed; color: #1a7a3c; }
+.status-cancelled { background: var(--gray-pale); color: var(--gray-mid); }
+
+/* Expanded detail */
+.rh-detail { padding: 0 22px 18px; border-top: 1px solid var(--gray-pale); padding-top: 14px; }
+.rh-donor-info { font-size: 0.88rem; padding: 10px 14px; background: #e6f9ed; border-radius: var(--radius-sm); margin-bottom: 10px; color: #1a7a3c; }
+.rh-calls-title { font-size: 0.8rem; font-weight: 700; color: var(--gray-mid); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.rh-call-row { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; padding: 5px 0; border-bottom: 1px solid var(--gray-pale); }
+.rh-call-row:last-child { border: none; }
+.call-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--gray-light); }
+.call-status-dot.status-completed { background: #28a745; }
+.call-status-dot.status-initiated { background: #ffc107; }
+.call-status-dot.status-failed    { background: var(--red); }
+.rh-call-phone  { flex: 1; color: var(--charcoal); font-weight: 500; }
+.rh-call-status { color: var(--gray-mid); font-size: 0.78rem; text-transform: capitalize; }
+.rh-call-time   { color: var(--gray-light); font-size: 0.78rem; }
+
+@media (max-width: 560px) {
+  .rh-stats { grid-template-columns: repeat(2, 1fr); }
+  .rh-card-top { flex-wrap: wrap; }
+}

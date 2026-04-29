@@ -1,0 +1,201 @@
+.profile-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ─── Availability Banner ─── */
+.availability-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 28px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid;
+  flex-wrap: wrap;
+}
+
+.avail-on {
+  background: rgba(34, 197, 94, 0.07);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+.avail-off {
+  background: var(--gray-pale);
+  border-color: #DDD5CC;
+}
+
+.avail-left { flex: 1; min-width: 200px; }
+
+.avail-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.avail-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-green {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+  animation: pulse-dot 1.6s ease infinite;
+}
+.dot-gray { background: var(--gray-light); }
+
+.avail-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--charcoal);
+}
+
+.avail-sub {
+  font-size: 0.87rem;
+  color: var(--gray-mid);
+  line-height: 1.5;
+}
+
+/* ─── Eligibility Card ─── */
+.eligibility-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 28px;
+}
+
+.elig-ready { border-color: rgba(34,197,94,0.25); }
+.elig-wait  { border-color: rgba(234,179,8,0.3); }
+
+.elig-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
+
+.elig-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--charcoal);
+  margin-bottom: 5px;
+}
+
+.elig-dates {
+  font-size: 0.88rem;
+  color: var(--gray-mid);
+  margin-bottom: 12px;
+}
+
+.elig-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.elig-bar {
+  flex: 1;
+  height: 6px;
+  background: #EEE8E0;
+  border-radius: 99px;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.elig-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-light), var(--red));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+.elig-bar-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-mid);
+  white-space: nowrap;
+}
+
+/* ─── Profile Card ─── */
+.profile-card { padding: 28px; }
+
+.profile-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 28px 160px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--gray-pale);
+}
+.info-row:last-child { border-bottom: none; }
+
+.info-icon { font-size: 1.1rem; text-align: center; }
+
+.info-label {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.info-value {
+  font-size: 0.97rem;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+
+.info-highlight {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.info-cap { text-transform: capitalize; }
+
+.edit-form { margin-top: 8px; }
+
+/* ─── Tips ─── */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.tip-card {
+  padding: 20px;
+  text-align: center;
+}
+
+.tip-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.tip-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+
+.tip-text {
+  font-size: 0.82rem;
+  color: var(--gray-mid);
+  line-height: 1.55;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .tips-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .tips-grid { grid-template-columns: 1fr 1fr; }
+  .info-row { grid-template-columns: 24px 1fr; }
+  .info-label { display: none; }
+}
