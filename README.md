@@ -1,48 +1,187 @@
-# 🩸 BloodLink — Complete Setup Guide
+# 🩸 BloodLink
 
-> Real-time blood donation matching platform. Hospitals post requests → eligible donors are auto-called via Twilio voice call → donors confirm on the website → hospital sees a live "Donor Found" popup.
-
----
-
-## Table of Contents
-
-1. [Project Structure](#project-structure)
-2. [Tech Stack](#tech-stack)
-3. [Step 1 — Install Prerequisites](#step-1--install-prerequisites)
-4. [Step 2 — Set Up Supabase](#step-2--set-up-supabase)
-5. [Step 3 — Set Up Twilio](#step-3--set-up-twilio)
-6. [Step 4 — Configure Environment Variables](#step-4--configure-environment-variables)
-7. [Step 5 — Deploy the Edge Function](#step-5--deploy-the-edge-function)
-8. [Step 6 — Run the App](#step-6--run-the-app)
-9. [How the Full Flow Works](#how-the-full-flow-works)
-10. [Troubleshooting](#troubleshooting)
+BloodLink is a real-time blood donation coordination platform that connects hospitals needing urgent blood to eligible donors. Hospitals can trigger emergency outreach, donors can respond immediately, and both sides receive live updates through the app.
 
 ---
 
-## Project Structure
+## 1. Architecture
 
+BloodLink follows a simple real-time web architecture:
+
+```text
++---------------------+        +---------------------------+
+| React Client        | ----> | Supabase                  |
+| (Vite + React)      |        | - PostgreSQL DB          |
+| - Donor UI          |        | - Auth                   |
+| - Hospital UI       |        | - Realtime subscriptions |
+| - Dashboard views   |        | - Edge Functions         |
++---------------------+        +-------------+-------------+
+                                             |
+                                             | Trigger call
+                                             v
+                                 +---------------------------+
+                                 | Supabase Edge Function     |
+                                 | trigger-calls             |
+                                 | - Receives request        |
+                                 | - Calls Twilio API        |
+                                 +-------------+-------------+
+                                               |
+                                               v
+                                      +-------------------+
+                                      | Twilio Voice API  |
+                                      | makes donor call   |
+                                      +-------------------+
 ```
+
+### Core flow
+
+1. Donor registers and sets availability and blood data.
+2. Hospital submits a blood request with blood group and pincode.
+3. The app checks matching donor records in Supabase.
+4. The matching donors receive Twilio voice calls through the serverless edge function.
+5. Donors confirm availability on the app.
+6. The request is marked fulfilled and the hospital gets a live donor-found update.
+
+---
+
+## 2. Technology Stack
+
+| Layer                | Technology                |
+| -------------------- | ------------------------- |
+| Frontend             | React 18 + Vite           |
+| Routing              | React Router              |
+| Styling              | CSS modules / custom CSS  |
+| Backend / Database   | Supabase PostgreSQL       |
+| Authentication       | Supabase Auth             |
+| Realtime Updates     | Supabase Realtime         |
+| Serverless Functions | Supabase Edge Functions   |
+| Voice Calling        | Twilio Programmable Voice |
+| Package Manager      | npm                       |
+
+---
+
+## 3. How the System Works
+
+### Donor flow
+
+1. A donor signs up with personal details, blood group, phone number, city, and pincode.
+2. The donor can toggle availability in the profile section.
+3. If a hospital needs matching blood, the donor receives a call from Twilio.
+4. The donor visits the app and clicks “I’m Ready to Donate”.
+5. The request is marked fulfilled and saved in the donation history.
+
+### Hospital flow
+
+1. A hospital signs up and enters profile and location information.
+2. The hospital creates a blood request with blood group and units needed.
+3. The app searches for eligible donors using matching blood group, pincode, availability, and donation timing rules.
+4. Matching donors are called using Twilio voice notifications.
+5. Once a donor responds, the hospital sees a real-time “Donor Found” notification.
+
+### Live update logic
+
+- Supabase Realtime listens to request and call log changes.
+- Donors receive a dashboard notification bell and live request updates.
+- Hospitals receive a donor-response popup without refreshing the page.
+
+---
+
+## 4. Main Features
+
+### For donors
+
+- Donor registration and profile management
+- Availability toggle for donation status
+- Blood group and location-based eligibility checks
+- Active blood request tracking
+- Voice-call response workflow
+- Donation history view
+- Real-time request notifications
+
+### For hospitals
+
+- Hospital registration and profile setup
+- Blood request creation form
+- Donor matching logic based on pincode and blood type
+- Twilio voice call trigger for matching donors
+- Request history and call logs
+- Real-time donor confirmation modal
+
+### Platform-wide
+
+- Secure auth with Supabase
+- Role-based routing for donor and hospital accounts
+- Live updates through Realtime
+- Secure server-side handling of Twilio secrets via Supabase functions
+
+---
+
+## 5. Expected Input
+
+### Donor input
+
+The donor registration/profile form expects:
+
+- Full name
+- Date of birth
+- Gender
+- Blood group: A+, A-, B+, B-, AB+, AB-, O+, O-
+- Phone number
+- Pincode
+- City
+- State
+- Availability status
+- Last donation date (optional)
+
+### Hospital input
+
+The hospital registration/profile form expects:
+
+- Hospital name
+- Registration number
+- Contact person name
+- Phone number
+- Address
+- Pincode
+- City
+- State
+
+### Blood request input
+
+The hospital request form expects:
+
+- Blood group needed
+- Units needed
+- Pincode of the hospital/request area
+- Optional notes
+
+### System-matching input
+
+The matching logic uses:
+
+- donor blood_group
+- donor pincode
+- donor is_available = true
+- donor last_donated date condition
+- hospital request blood group and location
+
+---
+
+## 6. Project Structure
+
+```text
 bloodlink/
 ├── src/
 │   ├── components/
 │   │   ├── donor/
-│   │   │   ├── ActiveRequestsTab.jsx   # "I'm Ready" button + real-time updates
-│   │   │   ├── HistoryTab.jsx          # Donor donation history + stats
-│   │   │   └── ProfileTab.jsx          # Donor profile + availability toggle
 │   │   ├── hospital/
-│   │   │   ├── BloodRequestTab.jsx     # "Need Blood" form + Twilio call trigger
-│   │   │   ├── HospitalProfileTab.jsx  # Hospital profile editor
-│   │   │   └── RequestHistoryTab.jsx   # Hospital request history + call logs
 │   │   ├── notifications/
-│   │   │   ├── NotificationBell.jsx    # Real-time bell icon in navbar (donors)
-│   │   │   ├── DonorFoundModal.jsx     # Popup when donor confirms (hospitals)
-│   │   │   └── AlreadyClaimedToast.jsx # Toast when another donor got there first
 │   │   ├── Navbar.jsx
 │   │   └── ProtectedRoute.jsx
 │   ├── context/
-│   │   └── AuthContext.jsx             # Auth state, role detection
+│   │   └── AuthContext.jsx
 │   ├── lib/
-│   │   └── supabase.js                 # Supabase client
+│   │   └── supabase.js
 │   ├── pages/
 │   │   ├── Home.jsx
 │   │   ├── Login.jsx
@@ -50,184 +189,127 @@ bloodlink/
 │   │   ├── DonorDashboard.jsx
 │   │   └── HospitalDashboard.jsx
 │   ├── App.jsx
-│   └── main.jsx
+│   ├── main.jsx
+│   └── index.css
 ├── backend/
 │   ├── supabase/
 │   │   └── functions/
 │   │       └── trigger-calls/
-│   │           └── index.ts            # Supabase Edge Function (calls Twilio)
-│   ├── supabase_schema_module3_additions.sql
-│   └── MODULE3_SETUP.md
-├── supabase_schema.sql                 # Run this FIRST in Supabase SQL Editor
-├── .env.example                        # Copy this to .env and fill in your keys
+│   │           └── index.ts
+│   ├── MODULE3_SETUP.md
+│   └── supabase_schema_module3_additions.sql
+├── supabase_schema.sql
 ├── package.json
 ├── vite.config.js
-└── index.html
+├── index.html
+├── README.md
+└── .env.example
 ```
 
 ---
 
-## Tech Stack
+## 7. Local Setup
 
-| Layer     | Technology |
-|-----------|-----------|
-| Frontend  | React 18 + Vite |
-| Styling   | Plain CSS with CSS variables |
-| Backend   | Supabase (PostgreSQL + Auth + Realtime + Edge Functions) |
-| Voice Calls | Twilio Programmable Voice |
-| Routing   | React Router v6 |
-| Toasts    | react-hot-toast |
+## 7.1 Client (Frontend) Setup
+
+### Requirements
+
+- Node.js 18+
+- npm
+
+### Steps
+
+```bash
+# in the project root
+npm install
+```
+
+Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Run the client:
+
+```bash
+npm run dev
+```
+
+Open the app in the browser:
+
+```text
+http://localhost:5173
+```
+
+### Notes
+
+- `.env` is used only by the frontend client.
+- Do not expose secrets in client-side code.
+- The Supabase keys should come from your Supabase project dashboard.
 
 ---
 
-## Step 1 — Install Prerequisites
+## 7.2 Server / Backend Setup
 
-Make sure you have these installed on your laptop:
+This project uses Supabase as the backend and a Supabase Edge Function as the server-side voice trigger.
 
-```bash
-# Check Node.js version (need 18 or higher)
-node --version
+### 1. Create Supabase project
 
-# If not installed, download from https://nodejs.org
+1. Go to Supabase.
+2. Create a new project.
+3. Copy your project URL and anon key.
+
+### 2. Run database schema
+
+Open the SQL editor in Supabase and run:
+
+```sql
+supabase_schema.sql
 ```
 
+If you are using the later module additions, also run:
+
+```sql
+backend/supabase_schema_module3_additions.sql
+```
+
+### 3. Configure Twilio
+
+1. Create a Twilio account.
+2. Buy or get a phone number.
+3. Note down:
+   - Account SID
+   - Auth Token
+   - Twilio phone number
+
+> For free/trial accounts, verify donor numbers before testing calls.
+
+### 4. Install Supabase CLI
+
 ```bash
-# Install Supabase CLI globally
 npm install -g supabase
-
-# Verify it's installed
 supabase --version
 ```
 
----
-
-## Step 2 — Set Up Supabase
-
-### 2a. Create a Supabase Project
-
-1. Go to [https://supabase.com](https://supabase.com) and sign in (free account is fine)
-2. Click **New Project**
-3. Fill in:
-   - **Name:** BloodLink (or anything you like)
-   - **Database Password:** choose a strong password (save it!)
-   - **Region:** choose the closest to you (e.g. South Asia)
-4. Click **Create new project** and wait ~2 minutes for it to start
-
-### 2b. Get Your API Keys
-
-Once your project is ready:
-
-1. In your Supabase project, go to **Settings → API**
-2. Copy these two values — you'll need them in Step 4:
-   - **Project URL** (looks like `https://abcdefgh.supabase.co`)
-   - **anon / public key** (a long string starting with `eyJ...`)
-
-### 2c. Run the Database Schema
-
-1. In your Supabase project, click **SQL Editor** in the left sidebar
-2. Click **New Query**
-3. Open the file `supabase_schema.sql` from this project folder
-4. Copy the entire contents and paste into the SQL Editor
-5. Click **Run** (green button)
-6. You should see: `Success. No rows returned`
-
-> ✅ This creates 5 tables: `donors`, `hospitals`, `blood_requests`, `call_logs`, `donation_history` — plus all security rules and realtime settings.
-
-### 2d. Enable Email Auth (already on by default)
-
-1. Go to **Authentication → Providers**
-2. Make sure **Email** is enabled (it is by default)
-3. For easy testing, go to **Authentication → Settings** and turn OFF **"Enable email confirmations"** — this lets you log in without verifying your email during the hackathon
-
----
-
-## Step 3 — Set Up Twilio
-
-Twilio is the service that makes the voice calls to donors.
-
-### 3a. Create a Twilio Account
-
-1. Go to [https://www.twilio.com](https://www.twilio.com) and sign up for a free account
-2. Verify your phone number during signup
-
-### 3b. Get a Twilio Phone Number
-
-1. From the Twilio Console homepage, click **Get a trial phone number**
-2. Note down this number (e.g. `+15551234567`) — this is your `TWILIO_FROM_NUMBER`
-
-### 3c. Note Down Your Credentials
-
-From the [Twilio Console](https://console.twilio.com):
-- **Account SID** — shown on the homepage (starts with `AC...`)
-- **Auth Token** — shown on the homepage (click the eye icon to reveal)
-
-### 3d. Verify Donor Phone Numbers (Trial Accounts Only)
-
-> ⚠️ On Twilio's free trial, you can only call phone numbers you have verified.
-
-For every donor phone number you want to test calls with:
-1. Go to **Twilio Console → Phone Numbers → Verified Caller IDs**
-2. Click **Add a new Caller ID**
-3. Enter the donor's phone number and verify it via SMS/call
-
-> 💡 Once you upgrade your Twilio account (even just $10 credit), this restriction is removed and you can call any number.
-
----
-
-## Step 4 — Configure Environment Variables
-
-1. In the project folder, find the file `.env.example`
-2. Make a copy of it and name it `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-3. Open `.env` in any text editor and fill in your values:
-
-```env
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5...
-```
-
-> ⚠️ The `.env` file must be in the root of the project folder (same level as `package.json`).
-> ⚠️ Never share or upload your `.env` file to GitHub. It's already in `.gitignore`.
-
-**Twilio keys do NOT go in `.env`** — they go into Supabase Secrets (next step). This keeps them secure on the server side.
-
----
-
-## Step 5 — Deploy the Edge Function
-
-The Edge Function is a server-side piece of code that receives a call request from the frontend and uses Twilio to call the donor. It runs on Supabase's servers so your Twilio keys stay private.
-
-### 5a. Log In to Supabase CLI
+### 5. Login and link your project
 
 ```bash
 supabase login
+supabase link --project-ref YOUR_PROJECT_REF
 ```
 
-This opens a browser window — sign in with your Supabase account.
+Find your project reference in the Supabase dashboard under Settings → General.
 
-### 5b. Find Your Project Reference ID
-
-1. In Supabase Dashboard, go to **Settings → General**
-2. Copy your **Reference ID** (looks like `abcdefghijklmnop`)
-
-### 5c. Link Your Project
+### 6. Copy edge function into the project folder
 
 ```bash
-# Run this inside the bloodlink project folder
-supabase link --project-ref YOUR_REFERENCE_ID_HERE
-```
-
-### 5d. Copy the Edge Function Into Place
-
-```bash
-# Run from inside the bloodlink project folder
 mkdir -p supabase/functions/trigger-calls
 cp backend/supabase/functions/trigger-calls/index.ts supabase/functions/trigger-calls/index.ts
 ```
 
-### 5e. Set Your Twilio Secrets
+### 7. Set Twilio secrets on Supabase
 
 ```bash
 supabase secrets set TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -235,138 +317,66 @@ supabase secrets set TWILIO_AUTH_TOKEN=your_auth_token_here
 supabase secrets set TWILIO_FROM_NUMBER=+15551234567
 ```
 
-Replace the values with your actual Twilio credentials from Step 3.
-
-### 5f. Deploy the Function
+### 8. Deploy the edge function
 
 ```bash
 supabase functions deploy trigger-calls
 ```
 
-You should see output ending with: `✅ Done: trigger-calls`
-
-> If you get a Deno error, make sure you have the latest Supabase CLI: `npm install -g supabase`
+If successful, you should see a message indicating the function was deployed successfully.
 
 ---
 
-## Step 6 — Run the App
+## 8. Example Flow
+
+```text
+Hospital requests O+ blood in pincode 560001
+  ↓
+System searches donors with:
+  - blood_group = O+
+  - pincode = 560001
+  - is_available = true
+  - last_donated older than allowed window
+  ↓
+Matching donors receive a Twilio call
+  ↓
+Donor clicks "I'm Ready to Donate"
+  ↓
+Request status updates to fulfilled
+  ↓
+Hospital gets live donor confirmation popup
+```
+
+---
+
+## 9. Troubleshooting
+
+### Frontend connection issues
+
+- Check that the `.env` values are correct.
+- Restart the Vite server after changing environment variables.
+
+### No donor matches found
+
+- Make sure blood group matches.
+- Ensure pincode matches the hospital location.
+- Confirm the donor is marked available.
+- Make sure the donor has not donated recently.
+
+### Twilio calls fail
+
+- Add donor numbers to Twilio verified caller IDs for trial accounts.
+- Verify `TWILIO_FROM_NUMBER` format.
+- Check edge function logs with:
 
 ```bash
-# Install all npm packages (only needed once)
-npm install
-
-# Start the development server
-npm run dev
-```
-
-Open your browser and go to: **http://localhost:5173**
-
----
-
-## How the Full Flow Works
-
-```
-1. DONOR registers
-   → Enters: name, DOB, blood group, phone, pincode, city
-
-2. HOSPITAL registers
-   → Enters: hospital name, phone, pincode, city
-
-3. HOSPITAL clicks "Need Blood"
-   → Selects blood group (e.g. O+) and clicks the button
-   → App queries Supabase for donors matching:
-       • Same blood group (O+)
-       • Same pincode
-       • is_available = true
-       • last_donated is NULL or more than 90 days ago
-   → For each matching donor: calls the Supabase Edge Function
-   → Edge Function calls Twilio API
-   → Twilio calls the donor's phone with a voice message:
-       "Hello [Name]! [Hospital] in [City] urgently needs O+ blood.
-        Please visit BloodLink and click I'm Ready to Donate."
-
-4. DONOR receives the call and visits the website
-   → Goes to Dashboard → Blood Requests tab
-   → Sees the active request from the hospital
-   → Clicks "I'm Ready to Donate"
-   → System atomically marks the request as fulfilled (race-condition safe)
-   → Donor's last_donated date is updated
-   → Donation is logged in donation_history
-
-5. HOSPITAL sees a real-time popup ("Donor Found!")
-   → Shows donor's name and phone number instantly
-   → No page refresh needed — powered by Supabase Realtime
-
-6. If ANOTHER DONOR tries to click "I'm Ready" after it's taken
-   → Sees a friendly toast: "Another hero stepped up! A donor already responded."
-
-7. NOTIFICATION BELL (for donors)
-   → Bell icon in the navbar shows unread count
-   → Clicking it shows all recent blood requests in the area
-   → Browser push notification appears if permission is granted
+supabase functions logs trigger-calls
 ```
 
 ---
 
-## Troubleshooting
+## 10. Summary
 
-### "Cannot connect to Supabase"
-- Check that `.env` has the correct `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-- Make sure `.env` is in the root folder (same level as `package.json`)
-- Restart the dev server after editing `.env`: stop it with Ctrl+C, then `npm run dev` again
+BloodLink combines modern frontend development, database-backed user management, and serverless voice automation to make blood donation coordination faster and more responsive. It is designed for urgent medical requests where speed matters and real-time communication can save lives.
 
-### "No eligible donors found" when sending a request
-- Make sure the donor's **pincode** exactly matches the hospital's **pincode** (same 6 digits)
-- Make sure the donor's **blood group** matches
-- Make sure the donor's **is_available** is set to true (toggle in Profile tab)
-- Make sure the donor's **last_donated** is either empty or more than 90 days ago
-
-### "Voice call not going through"
-- On Twilio trial: check that the donor's number is added to **Verified Caller IDs**
-- Check that `TWILIO_FROM_NUMBER` is in the correct format: `+[country code][number]` (e.g. `+919876543210` for India)
-- Run `supabase functions logs trigger-calls` in your terminal to see the error details
-
-### "Edge function not found" error
-- Re-run: `supabase functions deploy trigger-calls`
-- Make sure you ran `supabase link` first with the correct project reference ID
-
-### "Registration error" or "Row level security violation"
-- Make sure you ran the full `supabase_schema.sql` in the Supabase SQL Editor
-- If you see an error about a policy already existing, also run `backend/supabase_schema_module3_additions.sql`
-
-### Realtime not working (modal/bell not updating)
-- Check that you ran the `ALTER PUBLICATION supabase_realtime...` lines in `supabase_schema.sql`
-- Realtime requires the project to be running (not paused on the free tier after inactivity)
-
----
-
-## Build for Production
-
-```bash
-npm run build
-```
-
-This creates a `dist/` folder you can deploy to Vercel, Netlify, or any static host.
-
-For Vercel:
-```bash
-npm install -g vercel
-vercel
-```
-
-Remember to set your environment variables (`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`) in the Vercel project settings.
-
----
-
-## What Each Module Added
-
-| Module | Features |
-|--------|---------|
-| Module 1 | Project setup, Supabase schema, authentication (login/register for donors & hospitals), routing, landing page |
-| Module 2 | Donor dashboard — profile editor, availability toggle, eligibility countdown, blood requests view, donation history timeline |
-| Module 3 | Hospital dashboard — profile editor, "Need Blood" form, Twilio voice call integration, request history with call logs |
-| Module 4 | Real-time notification bell for donors, "Donor Found" live popup for hospitals, race-condition safe "I'm Ready" button, "Already Claimed" toast, browser push notifications |
-
----
-
-*Built with ❤️ for the hackathon. Every drop of blood counts.*
+Built for emergency matching, donor response, and live hospital visibility.
